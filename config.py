@@ -12,7 +12,7 @@ VECTORSTORE_DIR = PROJECT_ROOT / "vectorstore"
 
 # Models
 EMBEDDING_MODEL = "BAAI/bge-base-en-v1.5"
-LLM_MODEL = "llama-3.1-70b-versatile"
+LLM_MODEL = "llama-3.3-70b-versatile"
 
 # Chunking Configuration
 CHUNK_SIZE = 1000

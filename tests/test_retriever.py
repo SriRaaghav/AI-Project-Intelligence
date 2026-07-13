@@ -1,13 +1,13 @@
-from rag.retriever import get_retriever
+from rag.retriever import load_vectorstore
 
-retriever = get_retriever()
+vectorstore = load_vectorstore()
 
-query = "What are the key objectives of this project?"
+query = "What is the project development objective?"
 
-results = retriever.invoke(query)
-
-print("=" * 80)
+results = vectorstore.similarity_search(query, k=5)
 
 for i, doc in enumerate(results, 1):
-    print(f"\nResult {i}\n")
+    print("=" * 80)
+    print(f"Result {i}")
+    print(doc.metadata)
     print(doc.page_content[:500])
