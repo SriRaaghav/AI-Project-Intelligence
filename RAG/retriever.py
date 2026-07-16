@@ -28,3 +28,12 @@ def get_retriever(k=5):
     return vectorstore.as_retriever(
         search_kwargs={"k": k}
     )
+
+def retrieve_context(query: str, k: int = 5):
+    """
+    Retrieve the most relevant document chunks for a query.
+    """
+
+    retriever = get_retriever(k)
+
+    return retriever.invoke(query)

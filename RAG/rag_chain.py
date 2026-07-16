@@ -47,4 +47,3 @@ def ask_question(question: str):
     "answer": response.content,
     "sources": docs
     }
-    return response
