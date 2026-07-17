@@ -1,7 +1,11 @@
 from pathlib import Path
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 # Project Root
-PROJECT_ROOT = Path(__file__).parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 # Data Directories
 DATA_DIR = PROJECT_ROOT / "data"
@@ -14,6 +18,9 @@ VECTORSTORE_DIR = PROJECT_ROOT / "vectorstore"
 EMBEDDING_MODEL = "BAAI/bge-base-en-v1.5"
 LLM_MODEL = "llama-3.3-70b-versatile"
 
-# Chunking Configuration
+# API Keys
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+
+# Chunking
 CHUNK_SIZE = 1000
 CHUNK_OVERLAP = 200

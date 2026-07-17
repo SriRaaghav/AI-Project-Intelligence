@@ -1,38 +1,37 @@
 from langchain_core.prompts import ChatPromptTemplate
 
 from agents.base_agent import BaseAgent
+from schemas.risk import RiskOutput
 
 
 class RiskAgent(BaseAgent):
 
     QUERY = (
-        "Project risks, implementation risks, procurement risks, "
-        "financial risks, environmental and social risks."
+        "Identify project implementation risks, environmental risks, "
+        "financial risks, governance risks and mitigation strategies."
     )
 
     PROMPT = ChatPromptTemplate.from_template(
         """
-You are an experienced World Bank Project Risk Analyst.
+You are a World Bank Risk Assessment Specialist.
 
 Use ONLY the provided project documents.
 
-Analyze the project and produce a structured risk assessment.
+Identify:
 
-Include the following sections:
+- Overall Project Risk
+- Individual Risks
+- Severity of each Risk
+- Mitigation Strategy
+- Recommendations
 
-1. High Risks
-2. Medium Risks
-3. Low Risks
-4. Recommendations
-
-Do not invent risks.
-
-If information is unavailable, explicitly state it.
+If information is unavailable, explicitly state that.
 
 Context:
 {context}
 """
     )
 
-    def analyze_risks(self):
-        return self.run()
+    @property
+    def OUTPUT_SCHEMA(self):
+        return RiskOutput

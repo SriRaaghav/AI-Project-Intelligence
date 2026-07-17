@@ -1,37 +1,36 @@
 from langchain_core.prompts import ChatPromptTemplate
 
 from agents.base_agent import BaseAgent
+from schemas.procurement import ProcurementOutput
 
 
 class ProcurementAgent(BaseAgent):
 
     QUERY = (
-        "Procurement arrangements, procurement methods, "
-        "implementing agency, contracts, governance."
+        "Analyze procurement activities, contract packages, "
+        "procurement issues and recommendations."
     )
 
     PROMPT = ChatPromptTemplate.from_template(
         """
-You are an AI Procurement Specialist for World Bank projects.
+You are a World Bank Procurement Specialist.
 
 Use ONLY the provided project documents.
 
-Generate a procurement analysis.
+Generate:
 
-Include:
+- Procurement Summary
+- Procurement Packages
+- Procurement Issues
+- Recommendations
 
-1. Procurement Methods
-2. Implementing Agencies
-3. Major Contracts
-4. Procurement Risks
-5. Governance Recommendations
-
-If information is unavailable, explicitly state it.
+If information is unavailable, explicitly state that.
 
 Context:
 {context}
 """
     )
 
-    def analyze_procurement(self):
-        return self.run()
+    @property
+    def OUTPUT_SCHEMA(self):
+        return ProcurementOutput

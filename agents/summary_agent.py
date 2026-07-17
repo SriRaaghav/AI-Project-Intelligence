@@ -1,7 +1,7 @@
 from langchain_core.prompts import ChatPromptTemplate
 
 from agents.base_agent import BaseAgent
-
+from schemas.summary import SummaryOutput
 
 class SummaryAgent(BaseAgent):
 
@@ -31,5 +31,6 @@ Context:
 """
     )
 
-    def generate_summary(self):
-        return self.run()
+    @property
+    def OUTPUT_SCHEMA(self):
+        return SummaryOutput

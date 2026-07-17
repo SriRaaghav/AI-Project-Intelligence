@@ -1,39 +1,36 @@
 from langchain_core.prompts import ChatPromptTemplate
 
 from agents.base_agent import BaseAgent
+from schemas.timeline import TimelineOutput
 
 
 class TimelineAgent(BaseAgent):
 
     QUERY = (
-        "Project timeline, milestones, approval date, "
-        "implementation schedule, closing date."
+        "Extract project timeline, milestones, implementation progress "
+        "and future activities."
     )
 
     PROMPT = ChatPromptTemplate.from_template(
         """
-You are an AI Project Intelligence Assistant.
+You are a World Bank Project Timeline Specialist.
 
 Use ONLY the provided project documents.
 
-Extract the project timeline.
+Generate:
 
-Include the following sections:
+- Current Project Phase
+- Major Milestones
+- Upcoming Activities
+- Schedule Status
 
-1. Approval Date
-2. Effectiveness Date
-3. Closing Date
-4. Major Milestones
-5. Current Project Status
-
-If information is unavailable, explicitly state it.
-
-Present the output in a clear chronological format.
+If information is unavailable, explicitly state that.
 
 Context:
 {context}
 """
     )
 
-    def extract_timeline(self):
-        return self.run()
+    @property
+    def OUTPUT_SCHEMA(self):
+        return TimelineOutput

@@ -1,19 +1,18 @@
-from langchain_groq import ChatGroq
 from dotenv import load_dotenv
-from config import LLM_MODEL
+from langchain_groq import ChatGroq
 
-import os
+from config.settings import LLM_MODEL, GROQ_API_KEY
 
 load_dotenv()
 
 
 def get_llm():
-    """
-    Returns the Groq Llama 3.1 model.
-    """
-
     return ChatGroq(
         model=LLM_MODEL,
-        api_key=os.getenv("GROQ_API_KEY"),
+        api_key=GROQ_API_KEY,
         temperature=0,
     )
+
+
+def get_structured_llm(schema):
+    return get_llm().with_structured_output(schema)

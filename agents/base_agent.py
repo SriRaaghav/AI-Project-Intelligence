@@ -1,7 +1,9 @@
 from abc import ABC, abstractmethod
 
-from rag.llm import get_llm
+from rag.llm import get_structured_llm
 from rag.retriever import retrieve_context
+
+from schemas.agent import AgentResult
 
 
 class BaseAgent(ABC):
@@ -11,7 +13,7 @@ class BaseAgent(ABC):
 
     def __init__(self):
 
-        self.llm = get_llm()
+        self.llm = get_structured_llm(self.OUTPUT_SCHEMA)
 
     @property
     @abstractmethod
@@ -29,6 +31,14 @@ class BaseAgent(ABC):
         """
         pass
 
+    @property
+    @abstractmethod
+    def OUTPUT_SCHEMA(self):
+        """
+        Pydantic schema returned by this agent.
+        """
+        pass
+
     def retrieve(self):
 
         return retrieve_context(
@@ -43,9 +53,18 @@ class BaseAgent(ABC):
             for doc in docs
         )
 
-    def run(self):
+    def run(self, docs=None):
+        """
+        Run the agent.
 
-        docs = self.retrieve()
+        If docs are supplied (LangGraph workflow),
+        reuse them.
+
+        Otherwise perform retrieval.
+        """
+
+        if docs is None:
+            docs = self.retrieve()
 
         context = self.build_context(docs)
 
@@ -55,7 +74,7 @@ class BaseAgent(ABC):
 
         response = self.llm.invoke(messages)
 
-        return {
-            "response": response.content,
-            "sources": docs,
-        }
+        return AgentResult(
+            response=response,
+            sources=docs,
+        )
