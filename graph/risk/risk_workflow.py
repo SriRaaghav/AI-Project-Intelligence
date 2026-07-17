@@ -3,6 +3,7 @@ from langgraph.graph import (
     START,
     END,
 )
+from memory.checkpointer import checkpointer
 
 from graph.risk.risk_state import RiskState
 
@@ -20,4 +21,6 @@ builder.add_edge(START, "retrieve")
 builder.add_edge("retrieve", "risk")
 builder.add_edge("risk", END)
 
-risk_graph = builder.compile()
+risk_graph = builder.compile(
+    checkpointer=checkpointer
+)

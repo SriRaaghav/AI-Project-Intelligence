@@ -1,4 +1,5 @@
 from langgraph.graph import StateGraph, START, END
+from memory.checkpointer import checkpointer
 
 from graph.health.state import HealthState
 
@@ -34,4 +35,6 @@ builder.add_edge("procurement", "health")
 builder.add_edge("health", END)
 
 # Compile graph
-health_graph = builder.compile()
+health_graph = builder.compile(
+    checkpointer=checkpointer
+)

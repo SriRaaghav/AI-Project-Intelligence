@@ -1,4 +1,5 @@
 from langgraph.graph import StateGraph, START, END
+from memory.checkpointer import checkpointer
 
 from graph.procurement.state import ProcurementState
 from graph.procurement.nodes import (
@@ -15,4 +16,6 @@ builder.add_edge(START, "retrieve")
 builder.add_edge("retrieve", "procurement")
 builder.add_edge("procurement", END)
 
-procurement_graph = builder.compile()
+procurement_graph = builder.compile(
+    checkpointer=checkpointer
+)

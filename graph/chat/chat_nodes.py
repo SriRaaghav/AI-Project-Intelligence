@@ -1,3 +1,5 @@
+from langchain_core.messages import HumanMessage, AIMessage
+
 from graph.chat.chat_agent import ChatAgent
 from rag.retriever import retrieve_context
 
@@ -9,20 +11,26 @@ def retrieve_node(state):
         k=10,
     )
 
-    state["documents"] = documents
-
-    return state
+    return {
+        "documents": documents
+    }
 
 
 def chat_node(state):
 
     agent = ChatAgent()
 
+    messages = state.get("messages", [])
+
     response = agent.run(
-        question=state["question"],
-        documents=state["documents"],
+        messages=messages + [HumanMessage(content=state["question"])],
+        docs=state["documents"],
     )
 
-    state["response"] = response
-
-    return state
+    return {
+        "messages": [
+            HumanMessage(content=state["question"]),
+            AIMessage(content=response.content),
+        ],
+        "response": response.content,
+    }

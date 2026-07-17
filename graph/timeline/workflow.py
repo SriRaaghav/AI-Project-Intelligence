@@ -1,4 +1,5 @@
 from langgraph.graph import StateGraph, START, END
+from memory.checkpointer import checkpointer
 
 from graph.timeline.state import TimelineState
 from graph.timeline.nodes import (
@@ -15,4 +16,6 @@ builder.add_edge(START, "retrieve")
 builder.add_edge("retrieve", "timeline")
 builder.add_edge("timeline", END)
 
-timeline_graph = builder.compile()
+timeline_graph = builder.compile(
+    checkpointer=checkpointer
+)

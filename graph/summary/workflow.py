@@ -1,4 +1,5 @@
 from langgraph.graph import StateGraph, START, END
+from memory.checkpointer import checkpointer
 
 from graph.summary.state import SummaryState
 from graph.summary.nodes import (
@@ -15,4 +16,6 @@ builder.add_edge(START, "retrieve")
 builder.add_edge("retrieve", "summary")
 builder.add_edge("summary", END)
 
-summary_graph = builder.compile()
+summary_graph = builder.compile(
+    checkpointer=checkpointer
+)

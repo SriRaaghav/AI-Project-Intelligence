@@ -1,4 +1,5 @@
 from langgraph.graph import StateGraph, START, END
+from memory.checkpointer import checkpointer
 
 from graph.chat.chat_state import ChatState
 from graph.chat.chat_nodes import (
@@ -16,4 +17,6 @@ builder.add_edge(START, "retrieve")
 builder.add_edge("retrieve", "chat")
 builder.add_edge("chat", END)
 
-chat_graph = builder.compile()
+chat_graph = builder.compile(
+    checkpointer=checkpointer
+)

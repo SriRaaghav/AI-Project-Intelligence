@@ -1,5 +1,4 @@
 from langchain_core.prompts import ChatPromptTemplate
-
 from rag.llm import get_llm
 
 
@@ -9,38 +8,36 @@ class ChatAgent:
 
         self.llm = get_llm()
 
-        self.prompt = ChatPromptTemplate.from_template(
-            """
-You are an AI Project Intelligence Assistant.
-
-Answer the user's question using ONLY the provided project documents.
-
-Instructions:
-- Be accurate and concise.
-- Do not hallucinate.
-- If the answer is unavailable in the provided context, explicitly say so.
-- Quote important figures, dates and project names whenever relevant.
-
-Question:
-{question}
-
-Context:
-{context}
-"""
-        )
-
-    def run(self, question: str, documents):
+    def run(
+        self,
+        messages,
+        docs,
+    ):
 
         context = "\n\n".join(
-            doc.page_content
-            for doc in documents
+            doc.page_content for doc in docs
         )
 
-        messages = self.prompt.format_messages(
-            question=question,
-            context=context,
+        system_prompt = f"""
+You are an AI Project Intelligence Assistant.
+
+Answer ONLY from the provided project documents.
+
+Project Context:
+
+{context}
+"""
+
+        response = self.llm.invoke(
+
+            [
+
+                ("system", system_prompt),
+
+                *messages,
+
+            ]
+
         )
 
-        response = self.llm.invoke(messages)
-
-        return response.content
+        return response
